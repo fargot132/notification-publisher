@@ -11,14 +11,12 @@ services:
     restart: unless-stopped
     volumes:
       - php_socket:/var/run/php
-    healthcheck:
-      interval: 10s
-      timeout: 3s
-      retries: 3
-      start_period: 30s
+#    healthcheck:
+#      interval: 10s
+#      timeout: 3s
+#      retries: 3
+#      start_period: 30s
     environment:
-      # Run "composer require symfony/orm-pack" to install and configure Doctrine ORM
-      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-14}&charset=${POSTGRES_CHARSET:-utf8}
       # Run "composer require symfony/mercure-bundle" to install and configure the Mercure integration
       MERCURE_URL: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
       MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
@@ -57,9 +55,18 @@ services:
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
 
+
+  database:
+    image: mariadb:11.4
+    restart: unless-stopped
+    env_file:
+      - ./.env.local
+    working_dir: /var/lib/mysql
+    volumes:
+      - database_data:/var/lib/mysql
+
 volumes:
   php_socket:
   caddy_data:
   caddy_config:
-###> symfony/mercure-bundle ###
-###< symfony/mercure-bundle ###
+  database_data:
