@@ -10,23 +10,26 @@ use Stringable;
 
 class Email implements Stringable, JsonSerializable
 {
-    private string $email;
+    private string $value;
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __construct(string $email)
     {
         if (!$this->validateEmail($email)) {
             throw new InvalidArgumentException('Invalid email address');
         }
-        $this->email = $email;
+        $this->value = $email;
     }
     public function __toString(): string
     {
-        return $this->email;
+        return $this->value;
     }
 
     public function jsonSerialize(): string
     {
-        return $this->email;
+        return $this->value;
     }
 
     private function validateEmail(string $email): bool
@@ -41,6 +44,6 @@ class Email implements Stringable, JsonSerializable
 
     public function value(): string
     {
-        return $this->email;
+        return $this->value;
     }
 }

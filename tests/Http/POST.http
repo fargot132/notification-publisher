@@ -1,0 +1,15 @@
+POST https://localhost/api/notification
+accept: application/json
+Content-Type: application/json
+Cookie: XDEBUG_SESSION=PHPSTORM
+
+{
+  "userId": "d3b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b",
+  "subject": "Notification subject",
+  "content": "Notification content",
+  "email": "test@mail.a",
+  "phone": "+1234567890"
+}
+
+###
+

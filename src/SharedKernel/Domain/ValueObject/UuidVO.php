@@ -10,7 +10,7 @@ use Stringable;
 
 abstract class UuidVO implements Stringable, JsonSerializable
 {
-    private string $uuid;
+    protected string $value;
 
     /**
      * @throws InvalidArgumentException
@@ -20,7 +20,7 @@ abstract class UuidVO implements Stringable, JsonSerializable
         if (!$this->validateUuid($uuid)) {
             throw new InvalidArgumentException('Invalid UUID format');
         }
-        $this->uuid = $uuid;
+        $this->value = $uuid;
     }
 
     private function validateUuid(string $uuid): bool
@@ -35,16 +35,16 @@ abstract class UuidVO implements Stringable, JsonSerializable
 
     public function value(): string
     {
-        return $this->uuid;
+        return $this->value;
     }
 
     public function __toString()
     {
-        return $this->uuid;
+        return $this->value;
     }
 
     public function jsonSerialize(): string
     {
-        return $this->uuid;
+        return $this->value;
     }
 }

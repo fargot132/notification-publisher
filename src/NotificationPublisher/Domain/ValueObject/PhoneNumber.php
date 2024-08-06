@@ -10,7 +10,7 @@ use Stringable;
 
 class PhoneNumber implements Stringable, JsonSerializable
 {
-    private string $phoneNumber;
+    private string $value;
 
     public function __construct(string $phoneNumber)
     {
@@ -18,16 +18,16 @@ class PhoneNumber implements Stringable, JsonSerializable
         if (!$this->validatePhoneNumber($phoneNumber)) {
             throw new InvalidArgumentException('Invalid phone number');
         }
-        $this->phoneNumber = $phoneNumber;
+        $this->value = $phoneNumber;
     }
     public function __toString()
     {
-        return $this->phoneNumber;
+        return $this->value;
     }
 
     public function jsonSerialize(): mixed
     {
-        return $this->phoneNumber;
+        return $this->value;
     }
 
     public function equals(PhoneNumber $other): bool
@@ -37,7 +37,7 @@ class PhoneNumber implements Stringable, JsonSerializable
 
     public function value(): string
     {
-        return $this->phoneNumber;
+        return $this->value;
     }
 
     private function validatePhoneNumber(string $phoneNumber): bool

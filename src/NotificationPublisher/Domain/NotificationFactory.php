@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\NotificationPublisher\Domain;
 
-use App\NotificationPublisher\Domain\Exception\NullEmailAndPhoneNumberException;
 use App\NotificationPublisher\Domain\ValueObject\Content;
 use App\NotificationPublisher\Domain\ValueObject\Email;
 use App\NotificationPublisher\Domain\ValueObject\Id;
@@ -16,7 +15,6 @@ use InvalidArgumentException;
 class NotificationFactory
 {
     /**
-     * @throws NullEmailAndPhoneNumberException
      * @throws InvalidArgumentException
      */
     public function create(
@@ -24,16 +22,16 @@ class NotificationFactory
         string $userId,
         string $subject,
         string $content,
-        ?string $email,
-        ?string $phone
+        string $email,
+        string $phone
     ): Notification {
         return Notification::create(
             new Id($id),
             new UserId($userId),
             new Subject($subject),
             new Content($content),
-            $email ? new Email($email) : null,
-            $phone ? new PhoneNumber($phone) : null
+            new Email($email),
+            new PhoneNumber($phone)
         );
     }
 }
