@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\NotificationPublisher\UserInterface\Controller;
 
 use App\NotificationPublisher\Application\Command\CreateNotificationCommand;
-use App\SharedKernel\Infrastructure\MessageBus\CommandBus;
+use App\SharedKernel\Application\MessageBus\CommandBusInterface;
 use App\SharedKernel\Infrastructure\Uuid\UuidServiceInterface;
 use InvalidArgumentException;
 use JsonException;
@@ -21,7 +21,7 @@ use OpenApi\Attributes as OA;
 class CreateNotification extends AbstractController
 {
     public function __construct(
-        private CommandBus $commandBus,
+        private CommandBusInterface $commandBus,
         private UuidServiceInterface $uuidService,
     ) {
     }

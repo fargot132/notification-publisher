@@ -7,8 +7,8 @@ namespace App\NotificationPublisher\Application\CommandHandler;
 use App\NotificationPublisher\Application\Command\CreateNotificationCommand;
 use App\NotificationPublisher\Domain\NotificationFactory;
 use App\NotificationPublisher\Domain\NotificationRepositoryInterface;
+use App\SharedKernel\Application\EventBus\EventBusInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 class CreateNotificationCommandHandler
@@ -16,7 +16,7 @@ class CreateNotificationCommandHandler
     public function __construct(
         private NotificationFactory $notificationFactory,
         private NotificationRepositoryInterface $notificationRepository,
-        private MessageBusInterface $eventBus
+        private EventBusInterface $eventBus,
     ) {
     }
     public function __invoke(CreateNotificationCommand $command): void
@@ -35,4 +35,5 @@ class CreateNotificationCommandHandler
             $this->eventBus->dispatch($event);
         }
     }
+
 }

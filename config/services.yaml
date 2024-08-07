@@ -21,5 +21,10 @@ services:
             - '../src/Kernel.php'
             - '../src/**/Dto/'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\NotificationPublisher\Application\NotificationSenderInterface:
+        alias: App\NotificationPublisher\Infrastructure\NotificationSender\NotificationSenderService
+
+    App\NotificationPublisher\Application\Notifier\NotifierService:
+        arguments:
+            $notificationSender: '@App\NotificationPublisher\Application\NotificationSenderInterface'
+            $channel: '%env(NOTIFICATION_CHANNEL)%'

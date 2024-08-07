@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\SharedKernel\Infrastructure\MessageBus;
+namespace App\SharedKernel\Infrastructure\UseCaseBus;
 
+use App\SharedKernel\Application\MessageBus\CommandBusInterface;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class CommandBus
+class CommandBus implements CommandBusInterface
 {
     use HandleTrait;
 

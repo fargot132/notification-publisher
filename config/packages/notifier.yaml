@@ -1,0 +1,6 @@
+framework:
+    notifier:
+        texter_transports:
+            main: '%env(TWILIO_SMS_DSN)% || %env(SMSAPI_DSN)%'
+        admin_recipients:
+            - { email: admin@fargot.eu.org }

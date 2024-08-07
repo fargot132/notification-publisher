@@ -1,0 +1,5 @@
+framework:
+    mailer:
+        dsn: 'failover(%env(AMAZON_MAILER_DSN)% %env(WEBH_MAILER_DSN)%)'
+        envelope:
+            sender: 'notifier@fargot.eu.org'

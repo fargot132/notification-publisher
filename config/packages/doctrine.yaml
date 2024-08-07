@@ -1,4 +1,8 @@
 parameters:
+    env(MYSQL_HOST): 'db'
+    env(MYSQL_DATABASE): 'app'
+    env(MYSQL_USER): 'app'
+    env(MYSQL_PASSWORD): 'app'
     mysql_host: '%env(MYSQL_HOST)%'
     mysql_db: '%env(MYSQL_DATABASE)%'
     mysql_user: '%env(MYSQL_USER)%'
