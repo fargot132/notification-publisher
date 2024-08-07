@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\NotificationPublisher\Application\Notifier;
 
+use App\NotificationPublisher\Application\Enum\Channel;
 use App\NotificationPublisher\Application\NotificationSenderInterface;
 use App\NotificationPublisher\Infrastructure\ReadModel\Dto\NotificationReadDto;
 
@@ -28,6 +29,9 @@ class NotifierService
     public function channelParser(string $channel): void
     {
         $channel = preg_replace('/\s+/', '', $channel);
+        if (empty($channel)) {
+            return;
+        }
         $channel = strtolower($channel);
 
         if (str_contains($channel, 'failover')) {
@@ -40,11 +44,11 @@ class NotifierService
             $this->channels = explode(',', $channel);
         }
 
-        // Validate channels
-        $validChannels = ['email', 'sms'];
+        $this->channels = array_unique($this->channels);
+
         foreach ($this->channels as $ch) {
-            if (!in_array($ch, $validChannels, true)) {
-                throw new \InvalidArgumentException("Invalid channel: $ch");
+            if (Channel::tryFrom($ch) === null) {
+                throw new \InvalidArgumentException('Invalid channel');
             }
         }
     }
