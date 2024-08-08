@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\NotificationPublisher\Domain;
+namespace App\NotificationPublisher\Domain\Notification;
 
-use App\NotificationPublisher\Domain\ValueObject\Content;
-use App\NotificationPublisher\Domain\ValueObject\Email;
-use App\NotificationPublisher\Domain\ValueObject\Id;
-use App\NotificationPublisher\Domain\ValueObject\PhoneNumber;
-use App\NotificationPublisher\Domain\ValueObject\Subject;
-use App\NotificationPublisher\Domain\ValueObject\UserId;
+use App\NotificationPublisher\Domain\Notification\ValueObject\Content;
+use App\NotificationPublisher\Domain\Notification\ValueObject\Email;
+use App\NotificationPublisher\Domain\Notification\ValueObject\Id;
+use App\NotificationPublisher\Domain\Notification\ValueObject\PhoneNumber;
+use App\NotificationPublisher\Domain\Notification\ValueObject\Subject;
+use App\NotificationPublisher\Domain\Notification\ValueObject\UserId;
 use InvalidArgumentException;
 
 class NotificationFactory

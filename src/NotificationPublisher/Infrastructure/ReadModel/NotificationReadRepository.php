@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\NotificationPublisher\Infrastructure\ReadModel;
 
-use App\NotificationPublisher\Domain\NotificationReadRepositoryInterface;
+use App\NotificationPublisher\Domain\Notification\NotificationReadRepositoryInterface;
 use App\NotificationPublisher\Infrastructure\ReadModel\Dto\NotificationReadDto;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;

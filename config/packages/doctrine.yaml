@@ -1,62 +1,74 @@
 parameters:
-    env(MYSQL_HOST): 'db'
-    env(MYSQL_DATABASE): 'app'
-    env(MYSQL_USER): 'app'
-    env(MYSQL_PASSWORD): 'app'
-    mysql_host: '%env(MYSQL_HOST)%'
-    mysql_db: '%env(MYSQL_DATABASE)%'
-    mysql_user: '%env(MYSQL_USER)%'
-    mysql_password: '%env(MYSQL_PASSWORD)%'
-    env(DATABASE_URL): 'mysql://%mysql_user%:%mysql_password%@%mysql_host%:3306/%mysql_db%?serverVersion=mariadb-11.4.0&charset=utf8mb4'
+  env(MYSQL_HOST): 'db'
+  env(MYSQL_DATABASE): 'app'
+  env(MYSQL_USER): 'app'
+  env(MYSQL_PASSWORD): 'app'
+  mysql_host: '%env(MYSQL_HOST)%'
+  mysql_db: '%env(MYSQL_DATABASE)%'
+  mysql_user: '%env(MYSQL_USER)%'
+  mysql_password: '%env(MYSQL_PASSWORD)%'
+  env(DATABASE_URL): 'mysql://%mysql_user%:%mysql_password%@%mysql_host%:3306/%mysql_db%?serverVersion=mariadb-11.4.0&charset=utf8mb4'
 
 doctrine:
-    dbal:
-        url: '%env(resolve:DATABASE_URL)%'
+  dbal:
+    url: '%env(resolve:DATABASE_URL)%'
 
-        # IMPORTANT: You MUST configure your server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '16'
-        use_savepoints: true
-    orm:
-        auto_generate_proxy_classes: true
-        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-        auto_mapping: true
-        mappings:
-            Notification:
-                type: xml
-                is_bundle: false
-                dir: '%kernel.project_dir%/src/NotificationPublisher/Infrastructure/Persistence/Mapping'
-                prefix: 'App\NotificationPublisher\Domain'
-                alias: Notification
-            NotificationVO:
-                type: xml
-                is_bundle: false
-                dir: '%kernel.project_dir%/src/NotificationPublisher/Infrastructure/Persistence/Mapping/ValueObject'
-                prefix: 'App\NotificationPublisher\Domain\ValueObject'
-                alias: NotificationVO
+    # IMPORTANT: You MUST configure your server version,
+    # either here or in the DATABASE_URL env var (see .env file)
+    #server_version: '16'
+    use_savepoints: true
+  orm:
+    auto_generate_proxy_classes: true
+    naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+    auto_mapping: true
+    mappings:
+      Notification:
+        type: xml
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/NotificationPublisher/Infrastructure/Persistence/Mapping'
+        prefix: 'App\NotificationPublisher\Domain\Notification'
+        alias: Notification
+      NotificationVO:
+        type: xml
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/NotificationPublisher/Infrastructure/Persistence/Mapping/ValueObject'
+        prefix: 'App\NotificationPublisher\Domain\Notification\ValueObject'
+        alias: NotificationVO
+      NotificationRecord:
+        type: xml
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/NotificationPublisher/Infrastructure/Persistence/Mapping/NotificationRecord'
+        prefix: 'App\NotificationPublisher\Domain\Notification\NotificationRecord'
+        alias: NotificationRecord
+      NotificationRecordVO:
+        type: xml
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/NotificationPublisher/Infrastructure/Persistence/Mapping/NotificationRecord/ValueObject'
+        prefix: 'App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject'
+        alias: NotificationRecordVO
 
 when@test:
-    doctrine:
-        dbal:
-            # "TEST_TOKEN" is typically set by ParaTest
-            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+  doctrine:
+    dbal:
+      # "TEST_TOKEN" is typically set by ParaTest
+      dbname_suffix: '_test%env(default::TEST_TOKEN)%'
 
 when@prod:
-    doctrine:
-        orm:
-            auto_generate_proxy_classes: false
-            proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
-            query_cache_driver:
-                type: pool
-                pool: doctrine.system_cache_pool
-            result_cache_driver:
-                type: pool
-                pool: doctrine.result_cache_pool
+  doctrine:
+    orm:
+      auto_generate_proxy_classes: false
+      proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
+      query_cache_driver:
+        type: pool
+        pool: doctrine.system_cache_pool
+      result_cache_driver:
+        type: pool
+        pool: doctrine.result_cache_pool
 
-    framework:
-        cache:
-            pools:
-                doctrine.result_cache_pool:
-                    adapter: cache.app
-                doctrine.system_cache_pool:
-                    adapter: cache.system
+  framework:
+    cache:
+      pools:
+        doctrine.result_cache_pool:
+          adapter: cache.app
+        doctrine.system_cache_pool:
+          adapter: cache.system

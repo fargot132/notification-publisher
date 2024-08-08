@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\NotificationPublisher\Application\CommandHandler;
 
 use App\NotificationPublisher\Application\Command\CreateNotificationCommand;
-use App\NotificationPublisher\Domain\NotificationFactory;
-use App\NotificationPublisher\Domain\NotificationRepositoryInterface;
+use App\NotificationPublisher\Domain\Notification\NotificationFactory;
+use App\NotificationPublisher\Domain\Notification\NotificationRepositoryInterface;
 use App\SharedKernel\Application\EventBus\EventBusInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

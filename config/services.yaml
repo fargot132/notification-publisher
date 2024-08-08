@@ -20,6 +20,11 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/**/Dto/'
+            - '../src/**/Migrations/'
+            - '../src/**/ValueObject/'
+            - '../src/**/Command/'
+            - '../src/**/Query/'
+            - '../src/**/Event/'
 
     App\NotificationPublisher\Application\NotificationSenderInterface:
         alias: App\NotificationPublisher\Infrastructure\NotificationSender\NotificationSenderService

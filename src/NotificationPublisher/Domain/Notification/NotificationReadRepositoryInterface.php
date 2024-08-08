@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\NotificationPublisher\Domain;
+namespace App\NotificationPublisher\Domain\Notification;
 
 use App\NotificationPublisher\Infrastructure\ReadModel\Dto\NotificationReadDto;
 

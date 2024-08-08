@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\NotificationPublisher\Application\Notifier;
 
-use App\NotificationPublisher\Application\Enum\Channel;
 use App\NotificationPublisher\Application\NotificationSenderInterface;
+use App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Channel;
 use App\NotificationPublisher\Infrastructure\ReadModel\Dto\NotificationReadDto;
+use InvalidArgumentException;
 
 class NotifierService
 {
     private array $channels = [];
 
-    private string $mode = 'default';
+    private string $mode = 'concurrent';
 
     public function __construct(
         private NotificationSenderInterface $notificationSender,
@@ -23,32 +24,53 @@ class NotifierService
 
     public function send(NotificationReadDto $dto): void
     {
+        if ($this->mode === 'concurrent') {
+            $this->sendConcurrent($dto);
+        } else {
+            $this->sendFailover($dto);
+        }
         $this->notificationSender->send($dto, 'sms');
     }
 
-    public function channelParser(string $channel): void
+    private function channelParser(string $channelConfig): void
     {
-        $channel = preg_replace('/\s+/', '', $channel);
-        if (empty($channel)) {
+        $channelConfig = preg_replace('/\s+/', '', $channelConfig);
+        if (empty($channelConfig)) {
             return;
         }
-        $channel = strtolower($channel);
+        $channelConfig = strtolower($channelConfig);
 
-        if (str_contains($channel, 'failover')) {
-            $this->channels = explode(',', str_replace(['failover(', ')'], '', $channel));
+        if (str_contains($channelConfig, 'failover')) {
+            $this->channels = explode(',', str_replace(['failover(', ')'], '', $channelConfig));
             $this->mode = 'failover';
-        } elseif (str_contains($channel, 'concurrent')) {
-            $this->channels = explode(',', str_replace(['concurrent(', ')'], '', $channel));
-            $this->mode = 'concurrent';
         } else {
-            $this->channels = explode(',', $channel);
+            $this->channels = explode(',', $channelConfig);
         }
 
         $this->channels = array_unique($this->channels);
 
-        foreach ($this->channels as $ch) {
-            if (Channel::tryFrom($ch) === null) {
-                throw new \InvalidArgumentException('Invalid channel');
+        foreach ($this->channels as $channel) {
+            if (Channel::tryFrom($channel) === null) {
+                throw new InvalidArgumentException('Invalid notifier channel configuration');
+            }
+        }
+    }
+
+    private function sendConcurrent(NotificationReadDto $dto): void
+    {
+        foreach ($this->channels as $channel) {
+            $this->notificationSender->send($dto, $channel);
+        }
+    }
+
+    private function sendFailover(NotificationReadDto $dto): void
+    {
+        foreach ($this->channels as $channel) {
+            try {
+                $this->notificationSender->send($dto, $channel);
+                return;
+            } catch (\Exception) {
+                continue;
             }
         }
     }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\NotificationPublisher\Infrastructure\Persistence;
 
-use App\NotificationPublisher\Domain\Notification;
-use App\NotificationPublisher\Domain\NotificationRepositoryInterface;
+use App\NotificationPublisher\Domain\Notification\Notification;
+use App\NotificationPublisher\Domain\Notification\NotificationRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

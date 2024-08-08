@@ -1,0 +1,18 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\NotificationPublisher\Domain\Notification\NotificationRecord\NotificationRecord">
+        <id name="id" type="uuid"/>
+        <many-to-one field="notification" target-entity="App\NotificationPublisher\Domain\Notification\Notification"/>
+        <field name="status"
+               enum-type="App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Status"
+               length="20"/>
+        <field name="channel"
+               enum-type="\App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Channel"
+               length="20"/>
+        <embedded name="message"
+                  class="App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Message"/>
+        <field name="createdAt" type="datetime_immutable"/>
+    </entity>
+</doctrine-mapping>

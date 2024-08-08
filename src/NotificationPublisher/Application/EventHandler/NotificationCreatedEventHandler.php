@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\NotificationPublisher\Application\Notifier;
+namespace App\NotificationPublisher\Application\EventHandler;
 
-use App\NotificationPublisher\Domain\Event\NotificationCreated;
-use App\NotificationPublisher\Domain\NotificationReadRepositoryInterface;
+use App\NotificationPublisher\Application\Notifier\NotifierService;
+use App\NotificationPublisher\Domain\Notification\Event\NotificationCreated;
+use App\NotificationPublisher\Domain\Notification\NotificationReadRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
