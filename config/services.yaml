@@ -26,10 +26,6 @@ services:
             - '../src/**/Query/'
             - '../src/**/Event/'
 
-    App\NotificationPublisher\Application\NotificationSenderInterface:
-        alias: App\NotificationPublisher\Infrastructure\NotificationSender\NotificationSenderService
-
     App\NotificationPublisher\Application\Notifier\NotifierService:
         arguments:
-            $notificationSender: '@App\NotificationPublisher\Application\NotificationSenderInterface'
             $channel: '%env(NOTIFICATION_CHANNEL)%'

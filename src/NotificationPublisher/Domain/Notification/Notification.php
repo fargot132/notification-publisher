@@ -15,6 +15,7 @@ use App\NotificationPublisher\Domain\Notification\ValueObject\Subject;
 use App\NotificationPublisher\Domain\Notification\ValueObject\UserId;
 use App\SharedKernel\Domain\AggregateRoot;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Id as NotificationRecordId;
 
@@ -58,6 +59,7 @@ final class Notification extends AggregateRoot
         $this->status = Status::NEW;
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
+        $this->notificationRecords = new ArrayCollection();
     }
 
     public static function create(

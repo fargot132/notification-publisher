@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\NotificationPublisher\Application\EventHandler;
 
 use App\NotificationPublisher\Application\Notifier\NotifierService;
+use App\NotificationPublisher\Application\Query\GetNotificationByIdQuery;
 use App\NotificationPublisher\Domain\Notification\Event\NotificationCreated;
-use App\NotificationPublisher\Domain\Notification\NotificationReadRepositoryInterface;
+use App\SharedKernel\Application\MessageBus\QueryBusInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -14,16 +15,16 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 class NotificationCreatedEventHandler
 {
     public function __construct(
-        private NotificationReadRepositoryInterface $notificationReadRepository,
         private LoggerInterface $logger,
-        private NotifierService $notificationSenderService
+        private NotifierService $notificationSenderService,
+        private QueryBusInterface $queryBus
     ) {
     }
 
     public function __invoke(NotificationCreated $event): void
     {
         $notificationId = $event->aggregateId->value();
-        $notification = $this->notificationReadRepository->findById($notificationId);
+        $notification = $this->queryBus->query(new GetNotificationByIdQuery($notificationId));
         if ($notification === null) {
             $this->logger->error('Notification not found', ['notificationId' => $notificationId]);
             return;

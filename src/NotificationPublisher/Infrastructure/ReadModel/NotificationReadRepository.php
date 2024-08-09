@@ -9,6 +9,8 @@ use App\NotificationPublisher\Infrastructure\ReadModel\Dto\NotificationReadDto;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
 
 class NotificationReadRepository implements NotificationReadRepositoryInterface
 {
@@ -27,21 +29,22 @@ class NotificationReadRepository implements NotificationReadRepositoryInterface
     {
         $result = $this->connection->fetchAssociative(
             'SELECT * FROM notification WHERE id = :id',
-            ['id' => $id]
+            ['id' => $id],
+            ['id' => 'uuid']
         );
         if ($result === false) {
             return null;
         }
 
         return new NotificationReadDto(
-            $result[0]['id'],
-            $result[0]['user_id'],
-            $result[0]['email'],
-            $result[0]['phone_number'],
-            $result[0]['subject'],
-            $result[0]['content'],
-            $result[0]['status'],
-            $result[0]['created_at']
+            (string)Uuid::fromBinary($result['id']),
+            (string)Uuid::fromBinary($result['user_id_value']),
+            $result['email_value'],
+            $result['phone_number_value'],
+            $result['subject_value'],
+            $result['content_value'],
+            $result['status'],
+            $result['created_at']
         );
     }
 }

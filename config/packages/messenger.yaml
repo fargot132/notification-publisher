@@ -7,9 +7,7 @@ framework:
         # failure_transport: failed
         default_bus: command.bus
         buses:
-            command.bus:
-                middleware:
-                    - doctrine_transaction
+            command.bus: ~
             query.bus: ~
             event.bus:
                 default_middleware: allow_no_handlers
