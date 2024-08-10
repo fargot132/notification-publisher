@@ -10,7 +10,6 @@ use App\SharedKernel\Domain\ValueObject\UuidVO;
 
 class NotificationChannelFailed extends DomainEvent
 {
-
     public function __construct(UuidVO $aggregateId, readonly public Channel $channel)
     {
         parent::__construct($aggregateId);
