@@ -9,4 +9,5 @@ use App\NotificationPublisher\Infrastructure\ReadModel\Dto\NotificationReadDto;
 interface NotificationReadRepositoryInterface
 {
     public function findById(string $id): ?NotificationReadDto;
+    public function getNotificationIdsForRetry(\DateInterval $interval): array;
 }

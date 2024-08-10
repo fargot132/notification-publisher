@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\NotificationPublisher\Application\EventHandler;
 
 use App\NotificationPublisher\Application\Command\AddNotificationRecordCommand;
+use App\NotificationPublisher\Application\Command\SetNotificationPendingStatusCommand;
 use App\NotificationPublisher\Domain\Notification\Event\NotificationSent;
-use App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Status;
+use App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Status as RecordStatus;
 use App\SharedKernel\Infrastructure\UseCaseBus\CommandBus;
 use App\SharedKernel\Infrastructure\Uuid\UuidServiceInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use App\NotificationPublisher\Domain\Notification\ValueObject\Status;
 
 #[AsMessageHandler]
 class NotificationSentEventHandler
@@ -26,7 +28,7 @@ class NotificationSentEventHandler
         $command = new AddNotificationRecordCommand(
             $id,
             $event->aggregateId->value(),
-            Status::SENT,
+            RecordStatus::SENT,
             $event->channel,
             ''
         );

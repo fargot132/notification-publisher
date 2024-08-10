@@ -63,4 +63,9 @@ final class NotificationRecord
     {
         $this->notification = $notification;
     }
+
+    public function getStatus(): Status
+    {
+        return $this->status;
+    }
 }

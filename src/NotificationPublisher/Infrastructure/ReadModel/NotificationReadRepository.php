@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\NotificationPublisher\Infrastructure\ReadModel;
 
 use App\NotificationPublisher\Domain\Notification\NotificationReadRepositoryInterface;
+use App\NotificationPublisher\Domain\Notification\ValueObject\Status;
 use App\NotificationPublisher\Infrastructure\ReadModel\Dto\NotificationReadDto;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -45,6 +46,24 @@ class NotificationReadRepository implements NotificationReadRepositoryInterface
             $result['content_value'],
             $result['status'],
             $result['created_at']
+        );
+    }
+
+    public function getNotificationIdsForRetry(\DateInterval $interval): array
+    {
+        $status = Status::PENDING->value;
+        $updatedAt = (new \DateTimeImmutable())->sub($interval)->format('Y-m-d H:i:s');
+        $results = $this->connection->fetchAllAssociative(
+            'SELECT id FROM notification WHERE status = :status AND updated_at < :updated_at',
+            [
+                'status' => $status,
+                'updated_at' => $updatedAt
+            ]
+        );
+
+        return array_map(
+            fn($result) => (string)Uuid::fromBinary($result['id']),
+            $results
         );
     }
 }

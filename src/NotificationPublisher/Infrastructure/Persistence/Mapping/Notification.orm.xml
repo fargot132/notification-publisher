@@ -13,6 +13,7 @@
         <embedded name="subject" class="App\NotificationPublisher\Domain\Notification\ValueObject\Subject"/>
         <embedded name="content" class="App\NotificationPublisher\Domain\Notification\ValueObject\Content"/>
         <field name="status" enum-type="App\NotificationPublisher\Domain\Notification\ValueObject\Status" length="20"/>
+        <embedded name="retryCount" class="App\NotificationPublisher\Domain\Notification\ValueObject\RetryCount"/>
         <field name="createdAt" type="datetime_immutable"/>
         <field name="updatedAt" type="datetime_immutable"/>
         <one-to-many field="notificationRecords"

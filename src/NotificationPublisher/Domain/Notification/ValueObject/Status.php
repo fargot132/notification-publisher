@@ -9,6 +9,5 @@ enum Status: string
     case NEW = 'new';
     case PENDING = 'pending';
     case SENT = 'sent';
-    case PARTIALLY_SENT = 'partially_sent';
     case FAILED = 'failed';
 }

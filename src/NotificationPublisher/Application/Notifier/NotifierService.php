@@ -32,12 +32,15 @@ class NotifierService
 
     public function send(NotificationReadDto $dto): void
     {
+        if (empty($this->channels)) {
+            return;
+        }
+
         if ($this->mode === 'concurrent') {
             $this->sendConcurrent($dto);
         } else {
             $this->sendFailover($dto);
         }
-        $this->notificationSender->send($dto, 'sms');
     }
 
     private function channelParser(string $channelConfig): void
@@ -78,7 +81,7 @@ class NotifierService
             }
         }
 
-        if (!$atLeastOneSuccess && !empty($this->channels)) {
+        if (!$atLeastOneSuccess) {
             $this->allChannelsFailed($dto->id);
         }
     }

@@ -6,13 +6,13 @@ namespace App\NotificationPublisher\Application\EventHandler;
 
 use App\NotificationPublisher\Application\Notifier\NotifierService;
 use App\NotificationPublisher\Application\Query\GetNotificationByIdQuery;
-use App\NotificationPublisher\Domain\Notification\Event\NotificationCreated;
+use App\NotificationPublisher\Domain\Notification\Event\NotificationRetriedSending;
 use App\SharedKernel\Application\MessageBus\QueryBusInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class NotificationCreatedEventHandler
+class NotificationRetriedSendingEventHandler
 {
     public function __construct(
         private LoggerInterface $logger,
@@ -21,7 +21,7 @@ class NotificationCreatedEventHandler
     ) {
     }
 
-    public function __invoke(NotificationCreated $event): void
+    public function __invoke(NotificationRetriedSending $event): void
     {
         $notificationId = $event->aggregateId->value();
         $notification = $this->queryBus->query(new GetNotificationByIdQuery($notificationId));

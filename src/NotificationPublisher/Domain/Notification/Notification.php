@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\NotificationPublisher\Domain\Notification;
 
 use App\NotificationPublisher\Domain\Notification\Event\NotificationCreated;
+use App\NotificationPublisher\Domain\Notification\Event\NotificationRetriedSending;
 use App\NotificationPublisher\Domain\Notification\NotificationRecord\NotificationRecord;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Content;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Email;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Id;
 use App\NotificationPublisher\Domain\Notification\ValueObject\PhoneNumber;
+use App\NotificationPublisher\Domain\Notification\ValueObject\RetryCount;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Status;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Subject;
 use App\NotificationPublisher\Domain\Notification\ValueObject\UserId;
@@ -18,9 +20,12 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Id as NotificationRecordId;
+use App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Status as NotificationRecordStatus;
 
 final class Notification extends AggregateRoot
 {
+    public const MAX_RETRY_COUNT = 3;
+
     private string $id;
 
     private UserId $userId;
@@ -34,6 +39,8 @@ final class Notification extends AggregateRoot
     private Content $content;
 
     private Status $status;
+
+    private RetryCount $retryCount;
 
     private DateTimeImmutable $createdAt;
 
@@ -57,6 +64,7 @@ final class Notification extends AggregateRoot
         $this->subject = $subject;
         $this->content = $content;
         $this->status = Status::NEW;
+        $this->retryCount = new RetryCount(0);
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
         $this->notificationRecords = new ArrayCollection();
@@ -102,6 +110,10 @@ final class Notification extends AggregateRoot
         }
         $this->notificationRecords->add($notificationRecord);
         $notificationRecord->setNotification($this);
+
+        if ($notificationRecord->getStatus() === (NotificationRecordStatus::SENT)) {
+            $this->status = Status::SENT;
+        }
     }
 
     private function hasNotificationRecordWithId(NotificationRecordId $id): bool
@@ -113,5 +125,33 @@ final class Notification extends AggregateRoot
         }
 
         return false;
+    }
+
+    public function setPendingStatus(): void
+    {
+        if ($this->retryCount->value() >= self::MAX_RETRY_COUNT) {
+            $this->status = Status::FAILED;
+        } else {
+            $this->status = Status::PENDING;
+        }
+
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    public function retrySending(): void
+    {
+        if ($this->status !== Status::PENDING) {
+            return;
+        }
+
+        if ($this->retryCount->value() > self::MAX_RETRY_COUNT) {
+            $this->status = Status::FAILED;
+
+            return;
+        }
+
+        $this->retryCount = new RetryCount($this->retryCount->value() + 1);
+        $this->updatedAt = new DateTimeImmutable();
+        $this->raise(new NotificationRetriedSending(new Id($this->id)));
     }
 }

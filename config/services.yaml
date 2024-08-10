@@ -29,3 +29,7 @@ services:
     App\NotificationPublisher\Application\Notifier\NotifierService:
         arguments:
             $channel: '%env(NOTIFICATION_CHANNEL)%'
+
+    App\NotificationPublisher\Application\RetryManager\RetryManager:
+        arguments:
+            $retryInterval: '%env(RETRY_INTERVAL)%'
