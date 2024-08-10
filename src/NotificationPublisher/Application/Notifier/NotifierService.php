@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\NotificationPublisher\Application\Notifier;
 
+use App\NotificationPublisher\Application\Dto\NotificationReadDto;
 use App\NotificationPublisher\Application\NotificationSenderInterface;
 use App\NotificationPublisher\Domain\Notification\Event\NotificationAllChannelsFailed;
 use App\NotificationPublisher\Domain\Notification\Event\NotificationChannelFailed;
 use App\NotificationPublisher\Domain\Notification\Event\NotificationSent;
 use App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Channel;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Id;
-use App\NotificationPublisher\Infrastructure\ReadModel\Dto\NotificationReadDto;
 use App\SharedKernel\Application\EventBus\EventBusInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;

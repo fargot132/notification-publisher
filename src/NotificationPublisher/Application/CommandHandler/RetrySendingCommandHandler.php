@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\NotificationPublisher\Application\CommandHandler;
 
 use App\NotificationPublisher\Application\Command\RetrySendingCommand;
-use App\NotificationPublisher\Infrastructure\Persistence\NotificationRepository;
+use App\NotificationPublisher\Domain\Notification\NotificationRepositoryInterface;
 use App\SharedKernel\Application\EventBus\EventBusInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 class RetrySendingCommandHandler
 {
     public function __construct(
-        private NotificationRepository $notificationRepository,
+        private NotificationRepositoryInterface $notificationRepository,
         private EventBusInterface $eventBus
     ) {
     }

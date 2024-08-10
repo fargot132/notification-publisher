@@ -33,3 +33,8 @@ services:
     App\NotificationPublisher\Application\RetryManager\RetryManager:
         arguments:
             $retryInterval: '%env(RETRY_INTERVAL)%'
+
+    App\NotificationPublisher\Application\Throttling\ThrottlingService:
+        arguments:
+            $throttlingLimit: '%env(THROTTLING_LIMIT)%'
+            $throttlingInterval: '%env(THROTTLING_INTERVAL)%'

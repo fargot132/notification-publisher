@@ -5,24 +5,22 @@ declare(strict_types=1);
 namespace App\NotificationPublisher\Application\RetryManager;
 
 use App\NotificationPublisher\Application\Command\RetrySendingCommand;
-use App\NotificationPublisher\Domain\Notification\NotificationReadRepositoryInterface;
-use App\SharedKernel\Infrastructure\UseCaseBus\CommandBus;
-use DateInterval;
+use App\NotificationPublisher\Application\Query\GetNotificationIdsForRetryQuery;
+use App\SharedKernel\Application\MessageBus\CommandBusInterface;
+use App\SharedKernel\Application\MessageBus\QueryBusInterface;
 
 class RetryManager
 {
     public function __construct(
         private string $retryInterval,
-        private NotificationReadRepositoryInterface $notificationReadRepository,
-        private CommandBus $commandBus
+        private QueryBusInterface $queryBus,
+        private CommandBusInterface $commandBus
     ) {
     }
 
     public function retrySending(): void
     {
-        $notificationIds = $this->notificationReadRepository->getNotificationIdsForRetry(
-            DateInterval::createFromDateString($this->retryInterval)
-        );
+        $notificationIds = $this->queryBus->query(new GetNotificationIdsForRetryQuery($this->retryInterval));
 
         foreach ($notificationIds as $notificationId) {
             $this->commandBus->command(new RetrySendingCommand($notificationId));

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\NotificationPublisher\Infrastructure\ReadModel\Dto;
+namespace App\NotificationPublisher\Application\Dto;
 
 readonly class NotificationReadDto
 {
@@ -14,7 +14,9 @@ readonly class NotificationReadDto
         public string $subject,
         public string $content,
         public string $status,
-        public string $createdAt
+        public string $createdAt,
+        public string $updatedAt,
+        public int $retryCount
     ) {
     }
 }

@@ -6,15 +6,14 @@ namespace App\NotificationPublisher\Application\EventHandler;
 
 use App\NotificationPublisher\Application\Command\SetNotificationPendingStatusCommand;
 use App\NotificationPublisher\Domain\Notification\Event\NotificationAllChannelsFailed;
-use App\NotificationPublisher\Domain\Notification\ValueObject\Status;
-use App\SharedKernel\Infrastructure\UseCaseBus\CommandBus;
+use App\SharedKernel\Application\MessageBus\CommandBusInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 class NotificationAllChannelsFailedHandler
 {
     public function __construct(
-        private CommandBus $commandBus
+        private CommandBusInterface $commandBus
     ) {
     }
 

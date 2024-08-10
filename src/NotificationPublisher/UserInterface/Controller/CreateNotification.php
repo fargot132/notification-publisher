@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\NotificationPublisher\UserInterface\Controller;
 
 use App\NotificationPublisher\Application\Command\CreateNotificationCommand;
+use App\NotificationPublisher\Application\Throttling\ThrottlingService;
 use App\SharedKernel\Application\MessageBus\CommandBusInterface;
-use App\SharedKernel\Infrastructure\Uuid\UuidServiceInterface;
+use App\SharedKernel\Application\Uuid\UuidServiceInterface;
 use InvalidArgumentException;
 use JsonException;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +18,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Routing\Annotation\Route;
-use OpenApi\Attributes as OA;
 
 class CreateNotification extends AbstractController
 {
     public function __construct(
         private CommandBusInterface $commandBus,
         private UuidServiceInterface $uuidService,
+        private ThrottlingService $throttlingService
     ) {
     }
 
@@ -33,10 +35,10 @@ class CreateNotification extends AbstractController
             description: 'Send notification',
             type: 'object',
             example: [
-                'userId' => 'd3b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b',
+                'userId' => 'c88332db-edfa-4b36-a03f-f27f6945f77e',
                 'subject' => 'Notification subject',
                 'content' => 'Notification content',
-                'email' => 'test@mail.a',
+                'email' => 'test@mail.com',
                 'phone' => '+1234567890'
             ]
         )
@@ -75,6 +77,10 @@ class CreateNotification extends AbstractController
         $userId = $parameters['userId'] ?? null;
         if ($userId === null) {
             throw new BadRequestHttpException('userId is required');
+        }
+
+        if ($this->throttlingService->isThrottled($userId)) {
+            throw new BadRequestHttpException('User is throttled');
         }
 
         $subject = $parameters['subject'] ?? null;
