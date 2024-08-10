@@ -28,12 +28,10 @@ class CreateNotificationCommandHandler
             $command->content,
             $command->email,
             $command->phone
-
         );
         $this->notificationRepository->save($notification);
         foreach ($notification->pullEvents() as $event) {
             $this->eventBus->dispatch($event);
         }
     }
-
 }

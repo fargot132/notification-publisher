@@ -9,6 +9,9 @@ use App\NotificationPublisher\Domain\Notification\NotificationRepositoryInterfac
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Notification>
+ */
 class NotificationRepository extends ServiceEntityRepository implements NotificationRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)

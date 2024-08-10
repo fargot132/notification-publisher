@@ -15,14 +15,18 @@ final class NotificationRecord
 {
     private string $id;
 
+    /** @phpstan-ignore-next-line */
     private ?Notification $notification = null;
 
     private Status $status;
 
+    /** @phpstan-ignore-next-line */
     private Channel $channel;
 
+    /** @phpstan-ignore-next-line */
     private Message $message;
 
+    /** @phpstan-ignore-next-line */
     private DateTimeImmutable $createdAt;
 
     private function __construct(Id $id, Status $status, Channel $channel, Message $message)

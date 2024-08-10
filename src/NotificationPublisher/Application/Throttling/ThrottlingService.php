@@ -22,5 +22,4 @@ class ThrottlingService
 
         return $messageCount >= $this->throttlingLimit;
     }
-
 }

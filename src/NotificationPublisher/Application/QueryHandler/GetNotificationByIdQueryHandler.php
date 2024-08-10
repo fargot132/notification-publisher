@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class GetNotificationByIdQueryHandler
 {
-    public function __construct( private NotificationReadRepositoryInterface $notificationReadRepository)
+    public function __construct(private NotificationReadRepositoryInterface $notificationReadRepository)
     {
     }
     public function __invoke(GetNotificationByIdQuery $query): ?NotificationReadDto

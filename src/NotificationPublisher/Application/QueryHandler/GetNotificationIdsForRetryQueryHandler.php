@@ -15,6 +15,9 @@ class GetNotificationIdsForRetryQueryHandler
     {
     }
 
+    /**
+     * @return array<string>
+     */
     public function __invoke(GetNotificationIdsForRetryQuery $query): array
     {
         return $this->notificationReadRepository->getNotificationIdsForRetry($query->interval);

@@ -87,7 +87,9 @@
         }
     },
     "require-dev": {
+        "phpstan/phpstan": "^1.11",
         "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.10",
         "symfony/phpunit-bridge": "^6.2"
     }
 }

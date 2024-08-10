@@ -48,7 +48,7 @@ class CreateNotification extends AbstractController
         try {
             $command = $this->createCommandFromRequest($request);
             $this->commandBus->command($command);
-        } catch (InvalidArgumentException|JsonException|BadRequestHttpException $e) {
+        } catch (InvalidArgumentException | JsonException | BadRequestHttpException $e) {
             return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         } catch (HandlerFailedException $e) {
             if ($e->getPrevious() === null) {
@@ -68,7 +68,7 @@ class CreateNotification extends AbstractController
     private function createCommandFromRequest(Request $request): CreateNotificationCommand
     {
         $body = $request->getContent();
-        if ($body === null) {
+        if (!$body) {
             throw new BadRequestHttpException('Request body is required');
         }
 
@@ -104,7 +104,12 @@ class CreateNotification extends AbstractController
         }
 
         return new CreateNotificationCommand(
-            $this->uuidService->generate(), $userId, $subject, $content, $email, $phone
+            $this->uuidService->generate(),
+            $userId,
+            $subject,
+            $content,
+            $email,
+            $phone
         );
     }
 }

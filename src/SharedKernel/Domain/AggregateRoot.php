@@ -9,6 +9,9 @@ abstract class AggregateRoot
     /** @var DomainEvent[] */
     private array $events = [];
 
+    /**
+     * @return DomainEvent[]
+     */
     final public function pullEvents(): array
     {
         $events = $this->events;

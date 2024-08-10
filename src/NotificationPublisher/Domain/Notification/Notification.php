@@ -28,22 +28,29 @@ final class Notification extends AggregateRoot
 
     private string $id;
 
+    /** @phpstan-ignore-next-line */
     private UserId $userId;
 
+    /** @phpstan-ignore-next-line */
     private Email $email;
 
+    /** @phpstan-ignore-next-line */
     private PhoneNumber $phoneNumber;
 
+    /** @phpstan-ignore-next-line */
     private Subject $subject;
 
+    /** @phpstan-ignore-next-line */
     private Content $content;
 
     private Status $status;
 
     private RetryCount $retryCount;
 
+    /** @phpstan-ignore-next-line */
     private DateTimeImmutable $createdAt;
 
+    /** @phpstan-ignore-next-line */
     private DateTimeImmutable $updatedAt;
 
     /** @var Collection<int, NotificationRecord> */

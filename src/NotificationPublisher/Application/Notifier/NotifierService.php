@@ -17,6 +17,9 @@ use Psr\Log\LoggerInterface;
 
 class NotifierService
 {
+    /**
+     * @var string[]
+     */
     private array $channels = [];
 
     private string $mode = 'concurrent';
