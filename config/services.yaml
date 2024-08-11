@@ -39,8 +39,10 @@ services:
             $throttlingLimit: '%env(THROTTLING_LIMIT)%'
             $throttlingInterval: '%env(THROTTLING_INTERVAL)%'
 
-    App\SharedKernel\Application\EventBus\EventBusInterface:
-        public: true
+when@test:
+    services:
+        App\SharedKernel\Application\EventBus\EventBusInterface:
+            public: true
 
-    App\SharedKernel\Infrastructure\EventBus\EventBus:
-        public: true
+        App\SharedKernel\Infrastructure\EventBus\EventBus:
+            public: true
