@@ -65,6 +65,7 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 	setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX var
 fi
 
+bin/console doctrine:migrations:migrate --no-interaction
 echo "Running SUPERVISORD"
 sudo supervisord -c /etc/supervisord.conf
 
