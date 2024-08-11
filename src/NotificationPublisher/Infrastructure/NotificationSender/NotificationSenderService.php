@@ -22,6 +22,6 @@ class NotificationSenderService implements NotificationSenderInterface
         $notification = (new Notification($dto->subject, [$channel]))
             ->content($dto->content);
         $recipient = new Recipient($dto->email, $dto->phoneNumber);
-//        $this->notifier->send($notification, $recipient);
+        $this->notifier->send($notification, $recipient);
     }
 }

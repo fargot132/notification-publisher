@@ -103,6 +103,13 @@ RUN set -eux; \
 # Dev image
 FROM app_php AS app_php_dev
 
+RUN apk update && apk add --no-cache supervisor sudo;
+
+COPY docker/php/supervisord/supervisord.conf /etc/supervisord.conf
+COPY docker/php/supervisord/conf.d/ /etc/supervisord/conf.d/
+COPY docker/php/crontab /var/spool/cron/crontabs/www-data
+RUN chmod 600 /var/spool/cron/crontabs/www-data
+
 ENV APP_ENV=dev XDEBUG_MODE=off
 VOLUME /srv/app/var/
 

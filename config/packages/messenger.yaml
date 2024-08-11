@@ -20,4 +20,5 @@ framework:
 
         routing:
             # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+            'App\NotificationPublisher\Domain\Notification\Event\NotificationCreated': async
+            'App\NotificationPublisher\Domain\Notification\Event\NotificationRetriedSending': async
