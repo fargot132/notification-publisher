@@ -22,7 +22,7 @@ use Doctrine\Common\Collections\Collection;
 use App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Id as NotificationRecordId;
 use App\NotificationPublisher\Domain\Notification\NotificationRecord\ValueObject\Status as NotificationRecordStatus;
 
-final class Notification extends AggregateRoot
+class Notification extends AggregateRoot
 {
     public const MAX_RETRY_COUNT = 3;
 
@@ -73,7 +73,7 @@ final class Notification extends AggregateRoot
         $this->status = Status::NEW;
         $this->retryCount = new RetryCount(0);
         $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = $this->createdAt;
         $this->notificationRecords = new ArrayCollection();
     }
 
@@ -91,25 +91,6 @@ final class Notification extends AggregateRoot
         return $notification;
     }
 
-    public static function restore(
-        Id $id,
-        UserId $userId,
-        Email $email,
-        PhoneNumber $phoneNumber,
-        Subject $subject,
-        Content $content,
-        Status $status,
-        DateTimeImmutable $createdAt,
-        DateTimeImmutable $updatedAt
-    ): self {
-        $notification = new self($id, $userId, $subject, $content, $email, $phoneNumber);
-        $notification->status = $status;
-        $notification->createdAt = $createdAt;
-        $notification->updatedAt = $updatedAt;
-
-        return $notification;
-    }
-
     public function addNotificationRecord(NotificationRecord $notificationRecord): void
     {
         if ($this->hasNotificationRecordWithId($notificationRecord->getId())) {
@@ -118,7 +99,7 @@ final class Notification extends AggregateRoot
         $this->notificationRecords->add($notificationRecord);
         $notificationRecord->setNotification($this);
 
-        if ($notificationRecord->getStatus() === (NotificationRecordStatus::SENT)) {
+        if ($notificationRecord->getStatus() === NotificationRecordStatus::SENT) {
             $this->status = Status::SENT;
         }
     }
@@ -151,7 +132,7 @@ final class Notification extends AggregateRoot
             return;
         }
 
-        if ($this->retryCount->value() > self::MAX_RETRY_COUNT) {
+        if ($this->retryCount->value() >= self::MAX_RETRY_COUNT) {
             $this->status = Status::FAILED;
 
             return;

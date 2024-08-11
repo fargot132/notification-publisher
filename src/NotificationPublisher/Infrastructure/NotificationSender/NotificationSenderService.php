@@ -18,7 +18,6 @@ class NotificationSenderService implements NotificationSenderInterface
 
     public function send(NotificationReadDto $dto, string $channel): void
     {
-        throw new \Exception('Not implemented');
         $notification = (new Notification($dto->subject, [$channel]))
             ->content($dto->content);
         $recipient = new Recipient($dto->email, $dto->phoneNumber);

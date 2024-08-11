@@ -43,21 +43,6 @@ final class NotificationRecord
         return new self($id, $status, $channel, $message);
     }
 
-    public static function restore(
-        Id $id,
-        Notification $notification,
-        Status $status,
-        Channel $channel,
-        Message $message,
-        DateTimeImmutable $createdAt
-    ): self {
-        $notificationRecord = new self($id, $status, $channel, $message);
-        $notificationRecord->createdAt = $createdAt;
-        $notificationRecord->notification = $notification;
-
-        return $notificationRecord;
-    }
-
     public function getId(): Id
     {
         return new Id($this->id);
