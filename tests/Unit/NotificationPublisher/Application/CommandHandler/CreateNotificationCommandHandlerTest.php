@@ -6,14 +6,14 @@ namespace App\Tests\Unit\NotificationPublisher\Application\CommandHandler;
 
 use App\NotificationPublisher\Application\Command\CreateNotificationCommand;
 use App\NotificationPublisher\Application\CommandHandler\CreateNotificationCommandHandler;
+use App\NotificationPublisher\Application\NotificationFactory;
 use App\NotificationPublisher\Domain\Notification\Event\NotificationCreated;
 use App\NotificationPublisher\Domain\Notification\Notification;
-use App\NotificationPublisher\Domain\Notification\NotificationFactory;
 use App\NotificationPublisher\Domain\Notification\NotificationRepositoryInterface;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Id;
 use App\SharedKernel\Application\EventBus\EventBusInterface;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class CreateNotificationCommandHandlerTest extends TestCase
 {

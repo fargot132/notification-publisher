@@ -6,7 +6,7 @@ namespace App\NotificationPublisher\Infrastructure\ReadModel;
 
 use App\NotificationPublisher\Application\Dto\NotificationReadDto;
 use App\NotificationPublisher\Application\Dto\NotificationRecordReadDto;
-use App\NotificationPublisher\Domain\Notification\NotificationReadRepositoryInterface;
+use App\NotificationPublisher\Application\NotificationReadRepositoryInterface;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Status;
 use DateInterval;
 use Doctrine\DBAL\Connection;

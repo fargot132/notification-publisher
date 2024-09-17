@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\NotificationPublisher\Application\QueryHandler;
 
 use App\NotificationPublisher\Application\Dto\NotificationRecordReadDto;
+use App\NotificationPublisher\Application\NotificationReadRepositoryInterface;
 use App\NotificationPublisher\Application\Query\GetNotificationRecordsByIdQuery;
-use App\NotificationPublisher\Domain\Notification\NotificationReadRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

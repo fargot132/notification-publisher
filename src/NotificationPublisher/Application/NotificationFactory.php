@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\NotificationPublisher\Domain\Notification;
+namespace App\NotificationPublisher\Application;
 
+use App\NotificationPublisher\Domain\Notification\Notification;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Content;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Email;
 use App\NotificationPublisher\Domain\Notification\ValueObject\Id;

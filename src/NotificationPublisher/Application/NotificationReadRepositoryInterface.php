@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\NotificationPublisher\Domain\Notification;
+namespace App\NotificationPublisher\Application;
 
 use App\NotificationPublisher\Application\Dto\NotificationReadDto;
 use App\NotificationPublisher\Application\Dto\NotificationRecordReadDto;
